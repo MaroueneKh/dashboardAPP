@@ -20,22 +20,23 @@ class ProduitController extends GetxController {
   int a = 0;
 
 
-  Future<Depense> VerifyOCR(String image) async {
-    print('VerifyOCR');
+  Future<Depense> VerifyOCR(File file) async {
+    var request = http.MultipartRequest("POST", Uri.parse(url + '/predict'));
+    String fileName = file.path.split('/').last;
+    var multipartFile = await http.MultipartFile.fromPath("image", file.path,
+        filename:(fileName));
+    request.files.add(multipartFile);
+    http.StreamedResponse response = await request.send();
 
-    Map<String, String> queryParams = {
-      'image': image,
-    };
-    String queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = url+'/predict' + '?' + queryString; // result - https://www.myurl.com/api/v1/user?param1=1&param2=2
+    response.stream.transform(utf8.decoder).listen((value) {
+      Map<String, dynamic>  jsonResponse = json.decode(value);
 
-    var response = await http.post(requestUrl, headers: {
-      "Accept": "application/json"
-    },);
 
-    Map<String, dynamic>  jsonResponse = json.decode(response.body);
+      return  Depense.fromJson2(jsonResponse) ;
+    });
 
-   return  Depense.fromJson2(jsonResponse) ;
+
+
   }
 
 
@@ -46,7 +47,7 @@ class ProduitController extends GetxController {
     final response =  await http.get(url+'/ventes') ;
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      print(jsonResponse.length);
+
       return jsonResponse.map((job) => new Vente.fromJson(job)).toList();
     } else {
       throw Exception('Failed to load jobs from API');
@@ -54,17 +55,26 @@ class ProduitController extends GetxController {
 
   }
   Future<List<Depense>> AfficherDepenses () async {
-
     final response =  await http.get(url+'/depenses') ;
     if (response.statusCode == 200) {
-      print('hne') ;
+      print('depenses') ;
       List jsonResponse = json.decode(response.body);
+      print(response.body);
       print(jsonResponse.length);
       return jsonResponse.map((job) => new Depense.fromJson(job)).toList();
     } else {
       throw Exception('Failed to load jobs from API');
     }
-
+  }
+void Ajouterdepense (String a,String b,String c ,String d ,String e ) async {
+    print('kiko');
+    //Get.snackbar('Produit Ajouté ', '',colorText: Colors.white,icon: Icon(Icons.shopping_cart),duration: Duration(seconds: 3),backgroundColor: Colors.green) ;
+    final response =  await http.post(url+'/ajouterDepense',body:{'fullName':a,'factureCode':b,'designation':c,'montantTVA':d,'mttotal':e}) ;
+    if (response.statusCode == 200) {
+          print(response.body) ;
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
   }
 
 

@@ -1,5 +1,6 @@
 
 
+import 'package:dashboard_app/controllers/produit_controller.dart';
 import 'package:dashboard_app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,7 +40,7 @@ class _OCR2TABState extends State<OCR2TAB> {
             ]
         ),
 
-        body: MyCustomForm());
+        body: SingleChildScrollView(child: MyCustomForm()));
 
   }
 }
@@ -66,15 +67,28 @@ class MyCustomFormState extends State<MyCustomForm> {
   TextEditingController desController = TextEditingController();
   TextEditingController tvaController = TextEditingController();
   TextEditingController totalController = TextEditingController();
+  ProduitController ctrl = new ProduitController() ;
   bool mail = false ;
   bool pwd = false ;
   @override
   void initState() {
     // TODO: implement initState
-    factureController.value = TextEditingValue(
-      text: Utils.facture,
+    tierController.value = TextEditingValue(
+      text: Utils.tier,
       selection: TextSelection.fromPosition(
-        TextPosition(offset: Utils.facture.length),
+        TextPosition(offset: Utils.tier.length),
+      ),
+    );
+    totalController.value = TextEditingValue(
+      text: Utils.total,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: Utils.total.length),
+      ),
+    );
+    tvaController.value = TextEditingValue(
+      text: Utils.tier,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: Utils.tva.length),
       ),
     );
 
@@ -96,7 +110,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               key: _formKey,
               child: Container(
                 color: Colors.white,
-                height: Get.height*0.6,
+                height: Get.height*0.80,
                 width: MediaQuery.of(context).size.width*(0.90),
                 child:Flex(
                   direction: Axis.vertical,
@@ -140,7 +154,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Veuillez verifier votre nom';
+                                    return 'Veuillez inserer le tier';
                                   }
                                   return null;
                                 },
@@ -173,7 +187,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                                   prefixIcon: Icon(Icons.person,
                                       color: secondColor),
                                   alignLabelWithHint: true,
-                                  hintText: "Facture",
                                   hintStyle: TextStyle(
                                     color: secondColor,
                                   ),
@@ -183,7 +196,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 ),
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Veuillez insérer votre prénom';
+                                    return 'Veuillez insérer la facture';
                                   }
                                   return null;
                                 },
@@ -202,7 +215,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 keyboardType: TextInputType.text,
                                 controller: desController,
                                 cursorColor:  secondColor,
-                                obscureText: true,
+
                                 decoration: InputDecoration(
                                   fillColor: mainColor,
                                   filled: true,
@@ -225,7 +238,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 ),
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Veuillez insérer votre prénom';
+                                    return 'Veuillez insérer la designation';
                                   }
                                   return null;
                                 },
@@ -244,7 +257,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 keyboardType: TextInputType.text,
                                 controller: tvaController,
                                 cursorColor:  secondColor,
-                                obscureText: true,
+
                                 decoration: InputDecoration(
                                   fillColor: mainColor,
                                   filled: true,
@@ -267,7 +280,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 ),
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Veuillez insérer votre prénom';
+                                    return 'Veuillez insérer lt tva';
                                   }
                                   return null;
                                 },
@@ -286,7 +299,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 keyboardType: TextInputType.text,
                                 controller: totalController,
                                 cursorColor:  secondColor,
-                                obscureText: true,
+
                                 decoration: InputDecoration(
                                   fillColor: mainColor,
                                   filled: true,
@@ -309,12 +322,49 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 ),
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Veuillez insérer votre prénom';
+                                    return 'Veuillez insérer le total';
                                   }
                                   return null;
                                 },
                               )
+                          ),
+                          RawMaterialButton(
+                            fillColor: secondColor,
+                            splashColor: mainColor,
+                            child: Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children:  <Widget>[
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Text(
+                                    'Ajouter une facture',
+                                    maxLines: 1,
+                                    style: TextStyle(color: Colors.white,fontSize: 15),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24)
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                // If the form is valid, display a snackbar. In the real world,
+                                // you'd often call a server or save the information in a database.
+                                //  await viewController.Login(mailController.text, passwordController.text).then((value) =>
+                                //    _toggle(value)
+                                  ctrl.Ajouterdepense(tierController.text,factureController.text,desController.text,tvaController.text,totalController.text) ;
+                                //  );
+                              }
+
+
+
+                            },
                           )
+
                           // Add TextFormFields and RaisedButton here.
                         ]
                     )

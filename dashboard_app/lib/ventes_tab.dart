@@ -195,7 +195,7 @@ class _ProduitsState extends State<Produits> {
                     }
                     else {
 
-                      return LinearProgressIndicator() ;
+                      return LinearProgressIndicator(backgroundColor: secondColor,) ;
                     }
 
 

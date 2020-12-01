@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:get/get.dart';
+
 
 
 
 class Utils {
 
-  static String facture;
-
+ static String tier  = "Tier";
+ static String total  = "Total";
+ static String tva  = "Tva";
 
 }

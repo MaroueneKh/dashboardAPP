@@ -188,9 +188,13 @@ class _ProduitsState extends State<Produits> {
                      );
 
                    }
+                    else if (snapshot.hasError)
+                      {
+                        return(Text(snapshot.error.toString())) ;
+                      }
                     else {
 
-                      return LinearProgressIndicator() ;
+                      return LinearProgressIndicator(backgroundColor: secondColor,) ;
                     }
 
 

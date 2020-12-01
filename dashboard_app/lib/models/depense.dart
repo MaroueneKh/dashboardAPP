@@ -1,3 +1,5 @@
+import 'package:dashboard_app/utils.dart';
+
 class Depense {
   String tier;
   String facture;
@@ -15,20 +17,24 @@ class Depense {
   Depense.fromJson(Map<String, dynamic> json) {
 
 
-    tier = json['acteur']['fullName'];
+    tier = 'Tier';
     facture = json['factureCode'];
     designation = json['designation'];
     tva = json['montantTVA'];
     totalTTC = json['montantHT'];
-    print('Depense');
-   print(json['factureCode']);
+
 
   }
   Depense.fromJson2(Map<String, dynamic> json) {
     print("niiicee");
 
 
- facture = json['0'][0];
+    tier = json['0'][0];
+   Utils.tier = tier ;
+    totalTTC = json['1'][0];
+    Utils.total = totalTTC ;
+    tva = json['2'][0];
+    Utils.tva = tva ;
 
   }
 

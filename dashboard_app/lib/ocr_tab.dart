@@ -139,7 +139,7 @@ class MyCustomFormState extends State<MyCustomForm> with SingleTickerProviderSta
             child: SingleChildScrollView(
               child: Container(
                 color: Colors.white,
-                height: Get.height*0.60,
+                height: Get.height*0.70,
                 width: MediaQuery.of(context).size.width,
                 child:Flex(
                   direction: Axis.vertical,
@@ -195,17 +195,14 @@ class MyCustomFormState extends State<MyCustomForm> with SingleTickerProviderSta
                                       Get.snackbar('Merci ! ', 'Veuillez patientez',isDismissible: true,duration: Duration(seconds: 2));
                                        setState(() {
                                           _load = true;
-
                                         });
-                                        print("haw kmel");
+                                        Depense a = await  ctrl.VerifyOCR(file) ;
 
-                                       Depense a = await  ctrl.VerifyOCR('C:/Users/marou/Documents/5 eme/Amira/71.jpg').whenComplete(() =>  setState(() {
-
+                                      setState(() {
                                         _load = false;
-                                        widget.tabController.jumpToPage(1) ;
+                                      });
+                                   //   widget.tabController.jumpToPage(1);
 
-                                      }));
-                                     Utils.facture = a.facture ;
 
                                         // Validate returns true if the form is valid, otherwise false.
 
@@ -215,6 +212,41 @@ class MyCustomFormState extends State<MyCustomForm> with SingleTickerProviderSta
                                 ),
                               ],
                             ),
+                            RawMaterialButton(
+
+                              fillColor: secondColor,
+                              splashColor: mainColor,
+                              child: Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const <Widget>[
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      'Suivant',
+                                      maxLines: 1,
+                                      style: TextStyle(color: Colors.white,fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24)
+                              ),
+                              onPressed: () async {
+
+                                widget.tabController.jumpToPage(1);
+                                //   widget.tabController.jumpToPage(1);
+
+
+                                // Validate returns true if the form is valid, otherwise false.
+
+                              },
+                            )
+
                             // Add TextFormFields and RaisedButton here.
                           ]
                       ),
